@@ -6,6 +6,9 @@
   * {
     border-color: rgba(255, 255, 255, 0.08);
   }
+  html {
+    color-scheme: dark;
+  }
   body {
     background-color: #080B14;
     color: #F8FAFC;
@@ -22,8 +25,8 @@
 
 /* Custom refined scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -36,7 +39,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Subtle background grid pattern */
@@ -49,14 +52,55 @@
 
 .bg-dot-subtle {
   background-size: 24px 24px;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
 }
 
-/* Subtle border highlight for cards */
-.border-subtle {
+/* Glass & Glow utilities */
+.glass-panel {
+  background: rgba(16, 24, 39, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.border-subtle-hover:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+.glass-panel-elevated {
+  background: rgba(21, 31, 50, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Card hover glow */
+.card-hover-border {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover-border:hover {
+  border-color: rgba(129, 140, 248, 0.35);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.8), 0 0 25px -4px rgba(129, 140, 248, 0.15);
+}
+
+/* Shimmer effect for loaders */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.04) 20%,
+    rgba(255, 255, 255, 0.08) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Receipt, Plus, Eye, Trash2, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { Receipt, Plus, Eye, Trash2, CheckCircle2, Clock, AlertCircle, DollarSign, Download } from 'lucide-react';
 import { Card } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
 import { SearchFilterBar } from '../components/common/SearchFilterBar';
@@ -44,44 +44,48 @@ export const InvoicesPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 animate-fadeIn pb-12">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Receipt className="w-6 h-6 text-blue-600" />
-            <span>Accounts Receivable & Billing Invoices</span>
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#818CF8]/10 text-[#818CF8] text-[11px] font-mono border border-[#818CF8]/25 mb-1.5">
+            <Receipt className="w-3 h-3 text-[#2DD4BF]" />
+            <span>Accounts Receivable & Billing</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            Invoices & Billing
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Issue itemized invoices, monitor payment deadlines, and reconcile collections.
+          <p className="text-xs text-[#94A3B8] mt-1">
+            Issue itemized tax-compliant invoices, track collections deadlines & automated dunning.
           </p>
         </div>
       </div>
 
       {/* Financial Receivables Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-4 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Total Invoiced</span>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1">{formatCurrency(totalBilled)}</h3>
-          <span className="text-[11px] text-slate-400">{invoices.length} invoices generated</span>
-        </Card>
+        <div className="p-4 rounded-xl bg-[#101827] border border-white/[0.08] shadow-card-subtle">
+          <span className="text-[10px] font-mono text-[#94A3B8] uppercase">Total Invoiced Volume</span>
+          <h3 className="text-2xl font-extrabold text-white mt-1 tabular-nums font-mono">{formatCurrency(totalBilled)}</h3>
+          <span className="text-[11px] text-slate-400 font-mono mt-0.5 block">{invoices.length} invoices generated</span>
+        </div>
 
-        <Card className="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/60">
-          <span className="text-xs text-emerald-600 dark:text-emerald-400 uppercase tracking-wider font-semibold">Collected Revenue</span>
-          <h3 className="text-xl font-bold text-emerald-700 dark:text-emerald-400 mt-1">{formatCurrency(totalPaid)}</h3>
-          <span className="text-[11px] text-emerald-600/80">{invoices.filter(i => i.status === 'Paid').length} paid invoices</span>
-        </Card>
+        <div className="p-4 rounded-xl bg-[#101827] border border-[#2DD4BF]/25 shadow-card-subtle">
+          <span className="text-[10px] font-mono text-[#2DD4BF] uppercase">Collected Capital</span>
+          <h3 className="text-2xl font-extrabold text-[#2DD4BF] mt-1 tabular-nums font-mono">{formatCurrency(totalPaid)}</h3>
+          <span className="text-[11px] text-[#2DD4BF]/80 font-mono mt-0.5 block">{invoices.filter(i => i.status === 'Paid').length} paid invoices</span>
+        </div>
 
-        <Card className="p-4 bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/60">
-          <span className="text-xs text-amber-600 dark:text-amber-400 uppercase tracking-wider font-semibold">Outstanding Balance</span>
-          <h3 className="text-xl font-bold text-amber-700 dark:text-amber-400 mt-1">{formatCurrency(totalPending)}</h3>
-          <span className="text-[11px] text-amber-600/80">{invoices.filter(i => i.status === 'Pending' || i.status === 'Overdue').length} pending collection</span>
-        </Card>
+        <div className="p-4 rounded-xl bg-[#101827] border border-amber-500/25 shadow-card-subtle">
+          <span className="text-[10px] font-mono text-amber-300 uppercase">Outstanding Receivables</span>
+          <h3 className="text-2xl font-extrabold text-amber-300 mt-1 tabular-nums font-mono">{formatCurrency(totalPending)}</h3>
+          <span className="text-[11px] text-amber-400/80 font-mono mt-0.5 block">{invoices.filter(i => i.status === 'Pending' || i.status === 'Overdue').length} pending collection</span>
+        </div>
       </div>
 
       <SearchFilterBar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="Search invoice # or client..."
+        searchPlaceholder="Search invoice # or client name..."
         statusFilter={statusFilter}
         onStatusFilterChange={setStatusFilter}
         statusOptions={[
@@ -95,88 +99,83 @@ export const InvoicesPage: React.FC = () => {
         addLabel="Create Invoice"
       />
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden border-white/[0.08]" elevated>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase font-semibold text-slate-500 dark:text-slate-400">
+              <tr className="bg-[#151F32]/80 border-b border-white/[0.08] text-[11px] uppercase font-mono tracking-wider text-[#94A3B8]">
                 <th className="p-4">Invoice #</th>
-                <th className="p-4">Client</th>
+                <th className="p-4">Client Company</th>
                 <th className="p-4">Issue Date</th>
                 <th className="p-4">Due Date</th>
+                <th className="p-4">Subtotal</th>
                 <th className="p-4">Total Amount</th>
-                <th className="p-4">Payment Status</th>
+                <th className="p-4">Status</th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-sm">
+            <tbody className="divide-y divide-white/[0.04] text-xs">
               {filteredInvoices.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-400">
-                    No invoices matching query.
+                  <td colSpan={8} className="p-12 text-center text-[#94A3B8]">
+                    No invoices match selected search filter.
                   </td>
                 </tr>
               ) : (
                 filteredInvoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition">
-                    <td className="p-4 font-bold text-slate-900 dark:text-white">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setViewInvoice(inv)}
-                          className="hover:text-blue-600 dark:hover:text-blue-400 underline font-mono text-sm"
-                        >
-                          {inv.invoiceNumber}
-                        </button>
-                      </div>
-                      <div className="text-xs font-normal text-slate-400">{inv.id}</div>
+                  <tr key={inv.id} className="hover:bg-white/[0.03] transition-colors group">
+                    <td className="p-4 font-mono font-bold text-white group-hover:text-[#818CF8] transition">
+                      {inv.invoiceNumber}
                     </td>
 
-                    <td className="p-4 font-semibold text-slate-800 dark:text-slate-200">
-                      {inv.client}
+                    <td className="p-4 font-semibold text-white">
+                      <div>{inv.client}</div>
+                      <div className="text-[11px] font-mono text-[#94A3B8] font-normal">{inv.clientEmail || 'Direct Account'}</div>
                     </td>
 
-                    <td className="p-4 text-xs text-slate-500">
+                    <td className="p-4 text-[#94A3B8] font-mono text-[11px]">
                       {formatDate(inv.issueDate)}
                     </td>
 
-                    <td className="p-4 text-xs font-medium text-slate-600 dark:text-slate-300">
-                      <span className={inv.status === 'Overdue' ? 'text-rose-600 font-bold' : ''}>
-                        {formatDate(inv.dueDate)}
-                      </span>
+                    <td className="p-4 text-[#94A3B8] font-mono text-[11px]">
+                      {formatDate(inv.dueDate)}
                     </td>
 
-                    <td className="p-4 font-bold text-slate-900 dark:text-white">
+                    <td className="p-4 font-mono text-[#94A3B8] tabular-nums">
+                      {formatCurrency(inv.subtotal)}
+                    </td>
+
+                    <td className="p-4 font-mono font-extrabold text-white text-sm tabular-nums">
                       {formatCurrency(inv.totalAmount)}
                     </td>
 
                     <td className="p-4">
-                      <select
-                        value={inv.status}
-                        onChange={(e) => updateInvoiceStatus(inv.id, e.target.value as InvoiceStatus)}
-                        className="text-xs font-semibold px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none"
+                      <Badge 
+                        variant={
+                          inv.status === 'Paid' ? 'success' : 
+                          inv.status === 'Overdue' ? 'danger' : 'warning'
+                        }
                       >
-                        <option value="Pending">Pending</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Overdue">Overdue</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
+                        {inv.status}
+                      </Badge>
                     </td>
 
                     <td className="p-4 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                      <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => setViewInvoice(inv)}
-                          className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 rounded-lg transition"
+                          className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/[0.08] text-[11px] font-medium flex items-center gap-1 transition"
                           title="View / Print Invoice"
                         >
-                          <Eye className="w-4 h-4" />
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>View</span>
                         </button>
                         <button
                           onClick={() => deleteInvoice(inv.id)}
-                          className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition"
+                          className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/25 transition"
                           title="Delete Invoice"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </td>
@@ -194,7 +193,7 @@ export const InvoicesPage: React.FC = () => {
         onClose={() => setIsCreateModalOpen(false)}
       />
 
-      {/* View Printable Modal */}
+      {/* View / Print Statement Modal */}
       <InvoiceViewModal
         isOpen={!!viewInvoice}
         onClose={() => setViewInvoice(null)}

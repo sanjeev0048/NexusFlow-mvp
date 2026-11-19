@@ -8,6 +8,8 @@ import { useData } from '../../context/DataContext';
 interface NavbarProps {
   toggleSidebar: () => void;
   onOpenCommandPalette?: () => void;
+  theme?: 'light' | 'dark';
+  setTheme?: React.Dispatch<React.SetStateAction<'light' | 'dark'>> | ((t: 'light' | 'dark') => void);
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ 
@@ -33,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Global Command / Search Input */}
         <div 
           onClick={onOpenCommandPalette}
-          className="relative hidden sm:flex items-center w-72 lg:w-96 px-3.5 py-1.5 bg-[#101827] border border-white/[0.08] rounded-xl text-xs text-[#94A3B8] cursor-pointer hover:border-white/20 transition-all shadow-card-subtle group"
+          className="relative hidden sm:flex items-center w-72 lg:w-96 px-3.5 py-1.5 bg-[#101827] border border-white/[0.08] rounded-xl text-xs text-[#94A3B8] cursor-pointer hover:border-[#818CF8]/40 hover:bg-[#131D2E] transition-all shadow-card-subtle group"
         >
           <Search className="w-3.5 h-3.5 text-slate-400 mr-2.5 group-hover:text-[#818CF8] transition-colors" />
           <span className="flex-1 truncate">Search leads, inventory, invoices...</span>
@@ -49,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={toggleCheckIn}
           className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 transition active:scale-95 ${
             isCheckedIn 
-              ? 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/30 hover:bg-[#2DD4BF]/20' 
+              ? 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/30 hover:bg-[#2DD4BF]/20 shadow-[0_0_15px_-3px_rgba(45,212,191,0.25)]' 
               : 'bg-[#151F32] hover:bg-white/[0.08] text-[#F8FAFC] border border-white/10'
           }`}
           title={isCheckedIn ? 'Click to Clock Out' : 'Click to Clock In for today'}
@@ -76,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
 
         {/* User Pill */}
-        <div className="flex items-center gap-2 pl-1 py-1 pr-2 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+        <div className="flex items-center gap-2 pl-1 py-1 pr-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/20 transition">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#818CF8] to-[#2DD4BF] text-[#080B14] flex items-center justify-center font-bold text-xs shadow-sm">
             {user?.name?.charAt(0) || 'A'}
           </div>

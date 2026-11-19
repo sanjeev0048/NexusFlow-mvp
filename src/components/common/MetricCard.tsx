@@ -8,9 +8,9 @@ interface MetricCardProps {
   change: string;
   isPositive: boolean;
   icon: LucideIcon;
-  colorClass?: string;
   subtitle?: string;
   trendLabel?: string;
+  badge?: string;
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({ 
@@ -20,15 +20,20 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   isPositive, 
   icon: Icon, 
   subtitle,
-  trendLabel = 'vs last month'
+  trendLabel = 'vs last month',
+  badge
 }) => (
-  <Card className="p-5 relative overflow-hidden group hover:border-white/20 transition-all duration-300" hoverable>
-    {/* Subtle top border illumination */}
-    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-[#818CF8]/40 transition-all" />
-
+  <Card className="p-5 relative overflow-hidden group hover:border-[#818CF8]/30 transition-all duration-300" hoverable glowTop>
     <div className="flex items-center justify-between">
-      <span className="text-xs font-medium uppercase tracking-wider text-[#94A3B8]">{title}</span>
-      <div className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.06] text-[#818CF8] group-hover:scale-105 group-hover:text-[#2DD4BF] transition-all">
+      <div className="flex items-center gap-2">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8] font-mono">{title}</span>
+        {badge && (
+          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/[0.06] text-[#818CF8] border border-white/[0.06]">
+            {badge}
+          </span>
+        )}
+      </div>
+      <div className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#818CF8] group-hover:scale-110 group-hover:text-[#2DD4BF] group-hover:border-[#2DD4BF]/30 transition-all duration-300">
         <Icon className="w-4 h-4" />
       </div>
     </div>
@@ -37,20 +42,20 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       <h3 className="text-2xl sm:text-3xl font-extrabold text-[#F8FAFC] tracking-tight tabular-nums font-sans">
         {value}
       </h3>
-      <div className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full border ${
+      <div className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full border transition-all ${
         isPositive 
-          ? 'text-[#2DD4BF] bg-[#2DD4BF]/10 border-[#2DD4BF]/20' 
-          : 'text-rose-400 bg-rose-500/10 border-rose-500/20'
+          ? 'text-[#2DD4BF] bg-[#2DD4BF]/10 border-[#2DD4BF]/25' 
+          : 'text-rose-400 bg-rose-500/10 border-rose-500/25'
       }`}>
         {isPositive ? <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> : <ArrowDownRight className="w-3.5 h-3.5 mr-0.5" />}
-        {change}
+        <span>{change}</span>
       </div>
     </div>
 
     {subtitle && (
-      <div className="mt-2 flex items-center justify-between text-[11px] text-[#94A3B8]">
-        <span>{subtitle}</span>
-        <span className="text-slate-500 text-[10px]">{trendLabel}</span>
+      <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#94A3B8] pt-2 border-t border-white/[0.04]">
+        <span className="truncate">{subtitle}</span>
+        <span className="text-slate-500 text-[10px] font-mono shrink-0 ml-2">{trendLabel}</span>
       </div>
     )}
   </Card>

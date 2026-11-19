@@ -65,7 +65,6 @@ export const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose, e
         salary: Number(salary)
       });
     }
-
     onClose();
   };
 
@@ -73,115 +72,119 @@ export const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose, e
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={employeeToEdit ? 'Edit Team Member Profile' : 'Onboard New Employee'}
-      subtitle="Configure corporate email, organizational role, and compensation"
+      title={employeeToEdit ? 'Edit Team Member' : 'Add Team Member'}
+      subtitle="Register team member department, role, salary & status"
       maxWidth="lg"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Full Name *</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Full Name *</label>
             <input
               type="text"
               required
               value={name}
               onChange={e => setName(e.target.value)}
-              placeholder="e.g. Alexander Wright"
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              placeholder="e.g. Alex Morgan"
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#818CF8]/60 transition"
             />
           </div>
+
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Corporate Email *</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Corporate Email *</label>
             <input
               type="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="alex.w@nexusflow.io"
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              placeholder="alex@nexusflow.io"
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#818CF8]/60 transition"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Position / Job Title *</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Role / Job Title *</label>
             <input
               type="text"
               required
               value={role}
               onChange={e => setRole(e.target.value)}
-              placeholder="e.g. Senior Product Manager"
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              placeholder="e.g. Lead Platform Architect"
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#818CF8]/60 transition"
             />
           </div>
+
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Department</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Department</label>
             <select
               value={department}
-              onChange={e => setDepartment(e.target.value as Employee['department'])}
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              onChange={e => setDepartment(e.target.value as any)}
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-[#818CF8]/60 transition cursor-pointer"
             >
-              <option value="Engineering">Engineering</option>
-              <option value="Product">Product</option>
-              <option value="Sales">Sales</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Finance">Finance</option>
-              <option value="HR">HR</option>
-              <option value="Operations">Operations</option>
+              <option value="Engineering" className="bg-[#101827]">Engineering</option>
+              <option value="Product" className="bg-[#101827]">Product</option>
+              <option value="Sales" className="bg-[#101827]">Sales</option>
+              <option value="Marketing" className="bg-[#101827]">Marketing</option>
+              <option value="Finance" className="bg-[#101827]">Finance</option>
+              <option value="HR" className="bg-[#101827]">HR</option>
+              <option value="Operations" className="bg-[#101827]">Operations</option>
             </select>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Phone Number</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Phone Number</label>
             <input
-              type="text"
+              type="tel"
               value={phone}
               onChange={e => setPhone(e.target.value)}
-              placeholder="+1 (555) 000-0000"
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              placeholder="+1 (555) 234-5678"
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#818CF8]/60 transition"
             />
           </div>
+
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Base Salary ($/yr)</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Annual Salary ($)</label>
             <input
               type="number"
-              min="0"
-              step="5000"
+              min={0}
+              step={5000}
               value={salary}
               onChange={e => setSalary(Number(e.target.value))}
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white font-mono tabular-nums focus:outline-none focus:border-[#818CF8]/60 transition"
             />
           </div>
+
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Employment Status</label>
+            <label className="block text-xs font-semibold text-[#94A3B8] mb-1">Status</label>
             <select
               value={status}
               onChange={e => setStatus(e.target.value as EmployeeStatus)}
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+              className="w-full p-2.5 bg-[#151F32] border border-white/[0.08] rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-[#818CF8]/60 transition cursor-pointer"
             >
-              <option value="Active">Active</option>
-              <option value="On Leave">On Leave</option>
-              <option value="Terminated">Terminated</option>
+              <option value="Active" className="bg-[#101827]">Active</option>
+              <option value="On Leave" className="bg-[#101827]">On Leave</option>
+              <option value="Terminated" className="bg-[#101827]">Terminated</option>
             </select>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-3">
+        <div className="pt-3 border-t border-white/[0.08] flex items-center justify-end gap-2.5">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm font-medium transition"
+            className="px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-[#94A3B8] hover:text-white border border-white/[0.08] font-medium transition"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-semibold shadow-sm shadow-blue-500/20 transition"
+            className="px-5 py-2 bg-[#818CF8] hover:bg-[#6366F1] text-[#080B14] font-bold rounded-xl shadow-glow-primary transition active:scale-95"
           >
-            {employeeToEdit ? 'Update Profile' : 'Add Employee'}
+            {employeeToEdit ? 'Save Employee' : 'Add Employee'}
           </button>
         </div>
       </form>

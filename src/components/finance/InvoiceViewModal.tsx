@@ -1,8 +1,9 @@
 import React from 'react';
-import { Printer, CheckCircle, Download, Layers } from 'lucide-react';
+import { Printer, CheckCircle, Download, CheckCircle2 } from 'lucide-react';
 import { Modal } from '../common/Modal';
 import { Invoice } from '../../types';
 import { Badge } from '../common/Badge';
+import { NexusLogo } from '../common/NexusLogo';
 import { formatCurrency, formatDate } from '../../lib/utils';
 import { useData } from '../../context/DataContext';
 
@@ -29,121 +30,121 @@ export const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({ isOpen, onCl
       subtitle={`Client: ${invoice.client} • Due: ${formatDate(invoice.dueDate)}`}
       maxWidth="2xl"
     >
-      <div className="space-y-6 print:m-0" id="printable-invoice">
+      <div className="space-y-6 text-xs" id="printable-invoice">
         {/* Invoice Header */}
-        <div className="flex items-start justify-between pb-6 border-b border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">
-              <Layers className="w-6 h-6" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">NexusFlow Technologies Inc.</h2>
-              <p className="text-xs text-slate-500">100 Enterprise Way, Suite 400 • Silicon Valley, CA</p>
-            </div>
+        <div className="flex items-start justify-between pb-6 border-b border-white/[0.08]">
+          <div className="space-y-1">
+            <NexusLogo size="sm" badge="Official Statement" />
+            <p className="text-[#94A3B8] text-[11px] pt-1">NexusFlow Technologies Inc. • Finance Department</p>
+            <p className="text-slate-500 text-[10px]">100 Enterprise Way, Suite 400 • San Francisco, CA</p>
           </div>
-          <div className="text-right">
-            <Badge variant={invoice.status === 'Paid' ? 'success' : invoice.status === 'Pending' ? 'info' : 'danger'}>
+          <div className="text-right space-y-1">
+            <Badge variant={invoice.status === 'Paid' ? 'success' : invoice.status === 'Pending' ? 'warning' : 'danger'}>
               {invoice.status.toUpperCase()}
             </Badge>
-            <p className="text-xs text-slate-400 mt-1">Ref: {invoice.id}</p>
+            <p className="text-[10px] font-mono text-slate-500">Ref: {invoice.id}</p>
           </div>
         </div>
 
         {/* Bill To & Dates */}
-        <div className="grid grid-cols-2 gap-6 text-xs">
+        <div className="grid grid-cols-2 gap-6 bg-[#080B14] p-4 rounded-xl border border-white/[0.06]">
           <div>
-            <span className="font-semibold text-slate-400 uppercase tracking-wider block mb-1">Billed To</span>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white">{invoice.client}</h4>
-            <p className="text-slate-500">{invoice.clientEmail || 'accounts@client.com'}</p>
+            <span className="font-mono text-[10px] uppercase text-[#94A3B8] block mb-1">Billed To</span>
+            <h4 className="text-sm font-bold text-white">{invoice.client}</h4>
+            <p className="text-[#94A3B8] text-xs font-mono">{invoice.clientEmail || 'accounts@client.com'}</p>
           </div>
-          <div className="text-right space-y-1">
+          <div className="text-right space-y-1 font-mono text-[11px]">
             <div>
-              <span className="text-slate-400">Issue Date: </span>
-              <span className="font-semibold text-slate-800 dark:text-slate-200">{formatDate(invoice.issueDate)}</span>
+              <span className="text-[#94A3B8]">Invoice Number: </span>
+              <strong className="text-white">{invoice.invoiceNumber}</strong>
             </div>
             <div>
-              <span className="text-slate-400">Payment Due: </span>
-              <span className="font-bold text-rose-600 dark:text-rose-400">{formatDate(invoice.dueDate)}</span>
+              <span className="text-[#94A3B8]">Issue Date: </span>
+              <strong className="text-white">{formatDate(invoice.issueDate)}</strong>
+            </div>
+            <div>
+              <span className="text-[#94A3B8]">Due Date: </span>
+              <strong className="text-white">{formatDate(invoice.dueDate)}</strong>
             </div>
           </div>
         </div>
 
         {/* Itemized Table */}
-        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-semibold uppercase">
-              <tr>
-                <th className="p-3">Item Description</th>
+        <div className="rounded-xl border border-white/[0.08] overflow-hidden bg-[#101827]">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#151F32] border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider text-[#94A3B8]">
+                <th className="p-3">Description</th>
                 <th className="p-3 text-center">Qty</th>
                 <th className="p-3 text-right">Unit Price</th>
                 <th className="p-3 text-right">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {invoice.items.map((item, index) => (
-                <tr key={item.id || index}>
-                  <td className="p-3 font-medium text-slate-900 dark:text-white">{item.description}</td>
-                  <td className="p-3 text-center text-slate-600 dark:text-slate-400">{item.quantity}</td>
-                  <td className="p-3 text-right text-slate-600 dark:text-slate-400">{formatCurrency(item.unitPrice)}</td>
-                  <td className="p-3 text-right font-bold text-slate-900 dark:text-white">{formatCurrency(item.total)}</td>
+            <tbody className="divide-y divide-white/[0.04]">
+              {invoice.items.map(item => (
+                <tr key={item.id} className="hover:bg-white/[0.02]">
+                  <td className="p-3 font-medium text-white">{item.description}</td>
+                  <td className="p-3 text-center font-mono text-[#94A3B8]">{item.quantity}</td>
+                  <td className="p-3 text-right font-mono text-[#94A3B8] tabular-nums">{formatCurrency(item.unitPrice)}</td>
+                  <td className="p-3 text-right font-mono font-bold text-white tabular-nums">{formatCurrency(item.total)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* Totals */}
-        <div className="flex flex-col items-end space-y-1 text-xs">
-          <div className="flex justify-between w-64 text-slate-500 dark:text-slate-400">
-            <span>Subtotal:</span>
-            <span className="font-semibold text-slate-900 dark:text-white">{formatCurrency(invoice.subtotal)}</span>
-          </div>
-          <div className="flex justify-between w-64 text-slate-500 dark:text-slate-400">
-            <span>Sales Tax ({invoice.taxRate}%):</span>
-            <span className="font-semibold text-slate-900 dark:text-white">{formatCurrency(invoice.taxAmount)}</span>
-          </div>
-          <div className="flex justify-between w-64 pt-2 border-t border-slate-200 dark:border-slate-800 text-sm">
-            <span className="font-bold text-slate-900 dark:text-white">Total Balance:</span>
-            <span className="font-extrabold text-blue-600 dark:text-blue-400 text-base">{formatCurrency(invoice.totalAmount)}</span>
+        {/* Financial Calculation Totals */}
+        <div className="flex justify-end">
+          <div className="w-64 space-y-2 bg-[#080B14] p-4 rounded-xl border border-white/[0.06] font-mono text-xs">
+            <div className="flex justify-between text-[#94A3B8]">
+              <span>Subtotal:</span>
+              <span className="text-white tabular-nums">{formatCurrency(invoice.subtotal)}</span>
+            </div>
+            <div className="flex justify-between text-[#94A3B8]">
+              <span>Tax ({invoice.taxRate}%):</span>
+              <span className="text-white tabular-nums">{formatCurrency(invoice.taxAmount)}</span>
+            </div>
+            <div className="pt-2 border-t border-white/[0.08] flex justify-between font-bold text-sm">
+              <span className="text-white">Total Due:</span>
+              <span className="text-[#2DD4BF] tabular-nums font-extrabold">{formatCurrency(invoice.totalAmount)}</span>
+            </div>
           </div>
         </div>
 
+        {/* Footer Notes & Payment instructions */}
         {invoice.notes && (
-          <div className="p-3 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-lg text-xs text-slate-600 dark:text-slate-400">
-            <span className="font-bold block text-slate-700 dark:text-slate-300 mb-0.5">Payment Terms & Notes:</span>
+          <div className="p-3 bg-[#151F32]/50 rounded-xl border border-white/[0.06] text-[11px] text-[#94A3B8]">
+            <strong className="text-white block mb-0.5">Payment Terms & Wire Routing:</strong>
             {invoice.notes}
           </div>
         )}
 
-        {/* Modal Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
-          {invoice.status !== 'Paid' ? (
-            <button
-              onClick={() => {
-                updateInvoiceStatus(invoice.id, 'Paid');
-                onClose();
-              }}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition"
+        {/* Actions bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-white/[0.08]">
+          <div className="flex items-center gap-2">
+            <span className="text-[#94A3B8] text-[11px]">Reconcile Status:</span>
+            <select
+              value={invoice.status}
+              onChange={(e) => updateInvoiceStatus(invoice.id, e.target.value as any)}
+              className="text-xs font-semibold px-2.5 py-1 rounded-lg border border-white/[0.08] bg-[#151F32] text-white focus:outline-none"
             >
-              <CheckCircle className="w-4 h-4" />
-              Mark as Paid
-            </button>
-          ) : (
-            <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-              <CheckCircle className="w-4 h-4" /> Payment Settled
-            </span>
-          )}
+              <option value="Pending" className="bg-[#101827]">Pending</option>
+              <option value="Paid" className="bg-[#101827]">Mark as Paid</option>
+              <option value="Overdue" className="bg-[#101827]">Overdue</option>
+            </select>
+          </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="px-4 py-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 transition"
+              className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-white rounded-xl text-xs font-semibold border border-white/10 flex items-center gap-1.5 transition active:scale-95"
             >
-              <Printer className="w-4 h-4" /> Print / Save PDF
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print / PDF</span>
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition"
+              className="px-4 py-2 bg-[#818CF8] hover:bg-[#6366F1] text-[#080B14] rounded-xl text-xs font-bold transition active:scale-95"
             >
               Close
             </button>

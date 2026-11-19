@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, CheckCircle2, LogIn, LogOut, Calendar, ShieldCheck } from 'lucide-react';
+import { Clock, CheckCircle2, LogIn, LogOut, Calendar, ShieldCheck, Activity } from 'lucide-react';
 import { Card } from '../common/Card';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -21,33 +21,34 @@ export const AttendanceCard: React.FC = () => {
   const isCheckedOut = !!currentAttendance?.checkOut;
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-white via-white to-blue-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950/20 border-slate-200 dark:border-slate-800">
+    <Card className="p-6 bg-[#101827] border-white/[0.08] shadow-card-elevated" elevated glowTop>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Live Attendance Punch Console</span>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#2DD4BF] animate-ping" />
+            <Clock className="w-4 h-4 text-[#818CF8]" />
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#94A3B8]">Live Shift Attendance Console</span>
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight tabular-nums">
             {currentTime}
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Logged in as <strong className="text-slate-800 dark:text-slate-200">{user?.name}</strong> • Today: {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}
+          <p className="text-xs text-[#94A3B8] mt-1 font-mono">
+            Authenticated as <strong className="text-white">{user?.name}</strong> ({user?.role}) • {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
 
         <div className="flex items-center gap-4 w-full sm:w-auto">
           {/* Status Metrics */}
-          <div className="flex items-center gap-3 text-xs">
-            <div className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-              <span className="text-slate-400 block text-[10px] uppercase">Punch In</span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
+          <div className="flex items-center gap-3 text-xs font-mono">
+            <div className="p-2.5 rounded-xl bg-[#151F32] border border-white/[0.08]">
+              <span className="text-[#94A3B8] block text-[10px] uppercase">Punch In</span>
+              <span className="font-bold text-white tabular-nums">
                 {currentAttendance?.checkIn || '--:--'}
               </span>
             </div>
-            <div className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-              <span className="text-slate-400 block text-[10px] uppercase">Punch Out</span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
+            <div className="p-2.5 rounded-xl bg-[#151F32] border border-white/[0.08]">
+              <span className="text-[#94A3B8] block text-[10px] uppercase">Punch Out</span>
+              <span className="font-bold text-white tabular-nums">
                 {currentAttendance?.checkOut || '--:--'}
               </span>
             </div>
@@ -57,16 +58,16 @@ export const AttendanceCard: React.FC = () => {
           {!isCheckedOut ? (
             <button
               onClick={toggleCheckIn}
-              className={`px-5 py-3 rounded-xl font-bold text-sm shadow-md transition-all flex items-center gap-2 ${
+              className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 active:scale-95 ${
                 isCheckedIn 
-                  ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-500/20' 
-                  : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/20'
+                  ? 'bg-amber-500 hover:bg-amber-400 text-[#080B14] shadow-glow-accent' 
+                  : 'bg-[#2DD4BF] hover:bg-[#14B8A6] text-[#080B14] shadow-glow-accent'
               }`}
             >
               {isCheckedIn ? (
                 <>
                   <LogOut className="w-4 h-4" />
-                  <span>Clock Out</span>
+                  <span>Clock Out Shift</span>
                 </>
               ) : (
                 <>
@@ -76,9 +77,9 @@ export const AttendanceCard: React.FC = () => {
               )}
             </button>
           ) : (
-            <div className="flex items-center gap-2 px-4 py-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs font-bold text-emerald-600 dark:text-emerald-400">
+            <div className="flex items-center gap-2 px-4 py-3 bg-[#2DD4BF]/10 border border-[#2DD4BF]/30 rounded-xl text-xs font-bold text-[#2DD4BF] font-mono">
               <CheckCircle2 className="w-4 h-4" />
-              <span>Shift Completed ({currentAttendance.hoursWorked} hrs)</span>
+              <span>Shift Logged ({currentAttendance.hoursWorked} hrs)</span>
             </div>
           )}
         </div>

@@ -23,25 +23,25 @@ export const Badge: React.FC<BadgeProps> = ({
     success: {
       bg: 'bg-[#2DD4BF]/10',
       text: 'text-[#2DD4BF]',
-      border: 'border-[#2DD4BF]/20',
+      border: 'border-[#2DD4BF]/25',
       dotColor: 'bg-[#2DD4BF]'
     },
     warning: {
       bg: 'bg-amber-400/10',
       text: 'text-amber-300',
-      border: 'border-amber-400/20',
+      border: 'border-amber-400/25',
       dotColor: 'bg-amber-400'
     },
     danger: {
       bg: 'bg-rose-500/10',
       text: 'text-rose-400',
-      border: 'border-rose-500/20',
+      border: 'border-rose-500/25',
       dotColor: 'bg-rose-500'
     },
     info: {
       bg: 'bg-sky-500/10',
       text: 'text-sky-300',
-      border: 'border-sky-500/20',
+      border: 'border-sky-500/25',
       dotColor: 'bg-sky-400'
     },
     purple: {

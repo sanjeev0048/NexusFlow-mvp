@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Product } from './types';
+import { Page } from './types';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { DataProvider, useData } from './context/DataContext';
 
@@ -8,6 +8,7 @@ import { Sidebar } from './components/layout/Sidebar';
 import { Navbar } from './components/layout/Navbar';
 import { DemoBanner } from './components/layout/DemoBanner';
 import { ToastContainer } from './components/common/Toast';
+import { CommandPalette } from './components/common/CommandPalette';
 import { LeadModal } from './components/crm/LeadModal';
 import { ProductModal } from './components/inventory/ProductModal';
 
@@ -34,32 +35,31 @@ const AppContent: React.FC = () => {
 
   const [activePage, setActivePage] = useState<Page>('landing');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    try {
-      return (window.localStorage.getItem('nexusflow_theme') as 'light' | 'dark') || 'dark';
-    } catch {
-      return 'dark';
-    }
-  });
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
   // Global Quick Modals
   const [isQuickLeadModalOpen, setIsQuickLeadModalOpen] = useState(false);
   const [isQuickProductModalOpen, setIsQuickProductModalOpen] = useState(false);
 
-  // Sync theme to root html element
+  // Sync theme
   useEffect(() => {
     const root = window.document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    try {
-      window.localStorage.setItem('nexusflow_theme', theme);
-    } catch {}
-  }, [theme]);
+    root.classList.add('dark');
+  }, []);
 
-  // Auth routing enforcement: if user accesses dashboard while logged out, or logs in, handle transition
+  // Global Hotkey ⌘K / Ctrl+K listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleSetPage = (newPage: Page) => {
     setActivePage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -68,35 +68,35 @@ const AppContent: React.FC = () => {
   // 1. Public Landing Page
   if (activePage === 'landing') {
     return (
-      <>
+      <div className="min-h-screen bg-[#080B14] text-[#F8FAFC] antialiased">
         <LandingPage setPage={handleSetPage} />
         <ToastContainer toasts={toasts} onRemove={removeToast} />
-      </>
+      </div>
     );
   }
 
   // 2. Authentication Pages
   if (activePage === 'login') {
     return (
-      <>
+      <div className="min-h-screen bg-[#080B14] text-[#F8FAFC] antialiased">
         <AuthPage mode="login" setPage={handleSetPage} />
         <ToastContainer toasts={toasts} onRemove={removeToast} />
-      </>
+      </div>
     );
   }
 
   if (activePage === 'signup') {
     return (
-      <>
+      <div className="min-h-screen bg-[#080B14] text-[#F8FAFC] antialiased">
         <AuthPage mode="signup" setPage={handleSetPage} />
         <ToastContainer toasts={toasts} onRemove={removeToast} />
-      </>
+      </div>
     );
   }
 
   // 3. Application Workspace Shell
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 flex flex-col md:flex-row antialiased">
+    <div className="min-h-screen bg-[#080B14] font-sans text-[#F8FAFC] flex flex-col md:flex-row antialiased selection:bg-[#818CF8]/30 selection:text-white">
       {/* Enterprise Sidebar */}
       <Sidebar 
         activePage={activePage} 
@@ -113,6 +113,7 @@ const AppContent: React.FC = () => {
         {/* Global Top Navbar */}
         <Navbar 
           toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
           theme={theme} 
           setTheme={setTheme} 
         />
@@ -141,6 +142,15 @@ const AppContent: React.FC = () => {
           {activePage === 'settings' && <SettingsPage />}
         </main>
       </div>
+
+      {/* Global Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        setPage={handleSetPage}
+        onOpenNewLead={() => setIsQuickLeadModalOpen(true)}
+        onOpenNewProduct={() => setIsQuickProductModalOpen(true)}
+      />
 
       {/* Quick Access Modals */}
       <LeadModal

@@ -21,24 +21,24 @@ export const NexusLogo: React.FC<NexusLogoProps> = ({
   }[size];
 
   const textSizes = {
-    sm: 'text-base',
-    md: 'text-lg',
-    lg: 'text-xl',
-    xl: 'text-2xl',
+    sm: 'text-sm sm:text-base',
+    md: 'text-base sm:text-lg',
+    lg: 'text-lg sm:text-xl',
+    xl: 'text-xl sm:text-2xl',
   }[size];
 
   return (
-    <div className={`inline-flex items-center gap-2.5 group select-none ${className}`}>
+    <div className={`inline-flex items-center gap-2.5 select-none group cursor-pointer ${className}`}>
       {/* Minimal geometric N symbol */}
-      <div className={`relative ${iconSizes} rounded-xl bg-[#101827] border border-white/10 shadow-card-subtle flex items-center justify-center p-1.5 transition-all duration-300 group-hover:border-[#818CF8]/40 group-hover:shadow-glow-primary`}>
+      <div className={`relative ${iconSizes} rounded-xl bg-[#101827] border border-white/10 shadow-card-subtle flex items-center justify-center p-1.5 transition-all duration-300 group-hover:border-[#818CF8]/50 group-hover:shadow-glow-primary`}>
         {/* Subtle interior glow */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#818CF8]/10 via-transparent to-[#2DD4BF]/10 pointer-events-none" />
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#818CF8]/15 via-transparent to-[#2DD4BF]/10 pointer-events-none" />
         
         <svg 
           viewBox="0 0 24 24" 
           fill="none" 
           xmlns="http://www.w3.org/2000/svg" 
-          className="w-full h-full relative z-10"
+          className="w-full h-full relative z-10 transition-transform duration-300 group-hover:scale-105"
         >
           {/* Left vertical pillar */}
           <path 
@@ -77,7 +77,7 @@ export const NexusLogo: React.FC<NexusLogoProps> = ({
               Nexus<span className="text-[#818CF8]">Flow</span>
             </span>
             {badge && (
-              <span className="text-[10px] font-mono uppercase tracking-widest px-1.5 py-0.5 rounded bg-white/[0.06] text-[#94A3B8] border border-white/[0.08]">
+              <span className="text-[10px] font-mono uppercase tracking-widest px-1.5 py-0.5 rounded-md bg-white/[0.06] text-[#94A3B8] border border-white/[0.08] shadow-sm">
                 {badge}
               </span>
             )}
